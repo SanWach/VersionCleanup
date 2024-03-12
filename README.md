@@ -1,4 +1,4 @@
-# VersionCleanup
+# VersionCleanup | Version Choco 2.0 
 
 ## About
 VersionCleanup.sh is a Bash script designed to automate the cleanup of outdated files and folders matching the pattern you define within a specified directory on your server. It retains only the latest two versions of these files/folders, based on sorting criteria, and deletes the rest. Additionally, it logs the actions taken during each execution, including deletions, to a log file.
@@ -7,6 +7,7 @@ VersionCleanup.sh is a Bash script designed to automate the cleanup of outdated 
 - **Selective Cleanup**: Efficiently identifies and removes older versions of files, keeping the directory clean and manageable.
 - **Automated Logging**: Every run is logged, detailing which files were removed, making tracking and verification straightforward.
 - **Safety First**: Performs checks to avoid accidental execution in the wrong directory.
+- **Dry-Run Mode**: Run Dry-mode to see what will be deleted (When running the script manually)
 
 ## Getting Started
 
