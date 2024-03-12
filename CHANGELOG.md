@@ -13,4 +13,4 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0] Vanilla - 11/03/2024
 ### Added
-- Initial release with basic cleanup and logging functionality.
+- Initial release.
