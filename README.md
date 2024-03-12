@@ -23,7 +23,7 @@ cd <path-to-Script>
 ```
 4. Make the script executable
 ```bash
-chmod +x CleanScript.sh
+chmod +x VersionCleanup.sh
 ```
 ### Configuration
 
