@@ -4,10 +4,12 @@
 # Script-Name: VersionCleanup.sh
 # Desc: Script to delete old the old patch versions in this folder. It will delete all folders and files with the name you want it to delete "Folder/File Name" on your server - Except latest 2
 # Author: Mr_Akihiro
-# Version: Choco 2.0
+# Version: Choco 2.1
 # Created at: 11.03.2024
-# Last Change Date: 11.03.2024
+# Last Change Date: 13.03.2024
 # ===============================================================================
+
+#!/bin/bash
 
 dry_run=false
 
@@ -20,14 +22,20 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-directory=" " # Manually Enter correct Path!
+# Ensure you replace "/path/to/your/target/directory" with the actual directory path
+directory="/path/to/your/target/directory"
 
-#LogFile Creation to keep track of changes
-log_file="deletionLog_$(date +%Y-%m-%d).log"
+# Log file creation 
+log_file="${directory}/deletionLog_$(date +%Y-%m-%d).log"
 
-cd "$directory" || exit
 
-sorted_items=$(find . -maxdepth 1 -name "ENTERFILENAME" -printf '%f\n' | sort -t '-' -k2,2V -k3,3r) #Don't forget to enter folder or file name in -name ""
+touch "$log_file"
+
+# Verify directory change and log file access
+cd "$directory" || { echo "Failed to change directory to $directory. Exiting." | tee -a "$log_file"; exit 1; }
+
+# Replace "ENTERFILENAME" with your actual filename pattern
+sorted_items=$(find . -maxdepth 1 -name "ENTERFILENAME" -printf '%f\n' | sort -t '-' -k2,2V -k3,3r)
 total_items=$(echo "$sorted_items" | wc -l)
 let items_to_delete=total_items-2
 
@@ -37,16 +45,17 @@ else
     delete_candidates=$(echo "$sorted_items" | head -n "$items_to_delete")
     
     if [ "$dry_run" = true ]; then
-        echo "Dry run mode enabled. The following files would be deleted:"
-        echo "$delete_candidates"
+        echo "Dry run mode enabled. The following files would be deleted:" | tee -a "$log_file"
+        echo "$delete_candidates" | tee -a "$log_file"
     else
         echo "$delete_candidates" | while read -r line; do
             rm -rf "$line"
-            echo "Deleted: $line"
+            echo "Deleted: $line" | tee -a "$log_file"
         done
-        echo "Deletion of old versions completed."
+        echo "Deletion of old versions completed." | tee -a "$log_file"
     fi
 fi
+
 
 
 # Good Luck!
