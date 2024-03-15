@@ -26,13 +26,16 @@ done
 directory="/path/to/your/target/directory"
 
 # Log file creation 
-log_file="${directory}/deletionLog_$(date +%Y-%m-%d).log"
-
+log_file="${directory}/deletionLog_$(date +%Y-%m-%d_%H-%M-%S).log"
 
 touch "$log_file"
 
+log_with_timestamp() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$log_file"
+}
+
 # Verify directory change and log file access
-cd "$directory" || { echo "Failed to change directory to $directory. Exiting." | tee -a "$log_file"; exit 1; }
+cd "$directory" || { log_with_timestamp "Failed to change directory to $directory. Exiting."; exit 1; }
 
 # Replace "ENTERFILENAME" with your actual filename pattern
 sorted_items=$(find . -maxdepth 1 -name "ENTERFILENAME" -printf '%f\n' | sort -t '-' -k2,2V -k3,3r)
@@ -40,22 +43,23 @@ total_items=$(echo "$sorted_items" | wc -l)
 let items_to_delete=total_items-2
 
 if [ $items_to_delete -le 0 ]; then
-    echo "Nothing to delete, only the latest 2 versions are present." | tee -a "$log_file"
+    log_with_timestamp "Nothing to delete, only the latest 2 versions are present."
 else
     delete_candidates=$(echo "$sorted_items" | head -n "$items_to_delete")
     
     if [ "$dry_run" = true ]; then
-        echo "Dry run mode enabled. The following files would be deleted:" | tee -a "$log_file"
-        echo "$delete_candidates" | tee -a "$log_file"
+        log_with_timestamp "Dry run mode enabled. The following files would be deleted:"
+        echo "$delete_candidates" | while read -r line; do
+            log_with_timestamp "$line"
+        done
     else
         echo "$delete_candidates" | while read -r line; do
             rm -rf "$line"
-            echo "Deleted: $line" | tee -a "$log_file"
+            log_with_timestamp "Deleted: $line"
         done
-        echo "Deletion of old versions completed." | tee -a "$log_file"
+        log_with_timestamp "Deletion of old versions completed."
     fi
 fi
-
 
 
 # Good Luck!

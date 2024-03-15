@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2] Choco - 15/03/2024
+
+### Added
+- Implemented Timestamps into .log file
+
+### Changed
+- A new file for each run with the correct timestamps will be generated now, (Previously only one file with the same date exsisted)
+
 ## [2.1] Choco - 13/03/2024
 
 ### Changes
