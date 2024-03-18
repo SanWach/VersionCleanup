@@ -4,9 +4,9 @@
 # Script-Name: VersionCleanup.sh
 # Desc: Script to delete old the old patch versions in this folder. It will delete all folders and files with the name you want it to delete "Folder/File Name" on your server - Except latest 2
 # Author: Mr_Akihiro
-# Version: Choco 2.1
+# Version: Choco 2.3
 # Created at: 11.03.2024
-# Last Change Date: 13.03.2024
+# Last Change Date: 15.03.2024
 # ===============================================================================
 
 #!/bin/bash
